@@ -9,7 +9,7 @@ const Page = () => {
         Login
       </Link>
       <Link href={"/(modals)/booking"}>
-        Login
+        booking
       </Link>
       <Link href={"/listing/1209"}>
         Listing details 
