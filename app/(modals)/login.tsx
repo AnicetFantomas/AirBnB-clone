@@ -40,6 +40,7 @@ const Page = () => {
       if (createdSessionId) {
         setActive!({session: createdSessionId});
         router.back();
+        console.log(createdSessionId);
       } 
     } catch (err) { 
       console.error('OAuth error: ', err)
