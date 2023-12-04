@@ -2,8 +2,8 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
 const ExplorerHeader = () => {
@@ -56,6 +56,22 @@ const ExplorerHeader = () => {
             <Ionicons name="options-outline" size={24} />
           </TouchableOpacity>
         </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: "center",
+            gap: 20,
+            paddingHorizontal: 16,
+          }}
+        >
+          {categories.map((item, index) => (
+            <TouchableOpacity key={index}>
+              <MaterialIcons name={item.icon as any} size={24} />
+              <Text>{item.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -72,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 24,
     paddingBottom: 16,
-    gap:10,
+    gap: 10,
   },
   filterBtn: {
     padding: 10,
@@ -86,15 +102,15 @@ const styles = StyleSheet.create({
     gap: 10,
     borderColor: "#c2c2c2",
     borderWidth: StyleSheet.hairlineWidth,
-    width:280,
-    flex:1,
+    width: 280,
+    flex: 1,
     borderRadius: 30,
-    backgroundColor:'#fff',
-    padding:14,
+    backgroundColor: "#fff",
+    padding: 14,
     elevation: 2,
     shadowColor: "#000",
     shadowOpacity: 0.12,
-    shadowRadius:8,
+    shadowRadius: 8,
     shadowOffset: {
       width: 1,
       height: 1,
