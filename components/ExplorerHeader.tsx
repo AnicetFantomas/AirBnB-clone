@@ -1,42 +1,50 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
+const categories = [
+  {
+    name: "Tiny homes",
+    icon: "home",
+  },
+  {
+    name: "Cabins",
+    icon: "house-siding",
+  },
+  {
+    name: "Trending",
+    icon: "local-fire-department",
+  },
+  {
+    name: "Play",
+    icon: "videogame-asset",
+  },
+  {
+    name: "City",
+    icon: "apartment",
+  },
+  {
+    name: "Beachfront",
+    icon: "beach-access",
+  },
+  {
+    name: "Countryside",
+    icon: "nature-people",
+  },
+];
+
 const ExplorerHeader = () => {
-  const categories = [
-    {
-      name: "Tiny homes",
-      icon: "home",
-    },
-    {
-      name: "Cabins",
-      icon: "house-siding",
-    },
-    {
-      name: "Trending",
-      icon: "local-fire-department",
-    },
-    {
-      name: "Play",
-      icon: "videogame-asset",
-    },
-    {
-      name: "City",
-      icon: "apartment",
-    },
-    {
-      name: "Beachfront",
-      icon: "beach-access",
-    },
-    {
-      name: "Countryside",
-      icon: "nature-people",
-    },
-  ];
+  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const selectCategory = (index: number) => {
+    setActiveIndex(index);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "fff" }}>
       <View style={styles.container}>
@@ -66,9 +74,28 @@ const ExplorerHeader = () => {
           }}
         >
           {categories.map((item, index) => (
-            <TouchableOpacity key={index}>
-              <MaterialIcons name={item.icon as any} size={24} />
-              <Text>{item.name}</Text>
+            <TouchableOpacity
+              onPress={() => selectCategory(index)}
+              key={index}
+              ref={(el) => (itemsRef.current[index] = el)}
+              style={
+                activeIndex === index
+                  ? styles.categoriesBtnActive
+                  : styles.categoriesBtn
+              }
+            >
+              <MaterialIcons
+                name={item.icon as any}
+                size={24}
+                color={activeIndex === index ? "#000" : Colors.grey}
+              />
+              <Text 
+               style={
+                activeIndex === index
+                  ? styles.categoryTextActive
+                  : styles.categoryText
+              }
+              >{item.name}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -115,6 +142,30 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+  },
+  categoryText: {
+    fontSize: 14,
+    fontFamily: 'mon-sb',
+    color: Colors.grey,
+  },
+  categoryTextActive: {
+    fontSize: 14,
+    fontFamily: 'mon-sb',
+    color: '#000',
+  },
+  categoriesBtn: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 8,
+  },
+  categoriesBtnActive: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomColor: "#000",
+    borderBottomWidth: 2,
+    paddingBottom: 8,
   },
 });
 
