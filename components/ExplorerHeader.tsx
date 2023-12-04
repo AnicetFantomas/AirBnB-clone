@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet,TouchableOpacity,ScrollView } from "react-native";
 import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+// import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import * as Haptics from 'expo-haptics';
 
 const categories = [
   {
@@ -38,11 +39,18 @@ const categories = [
 ];
 
 const ExplorerHeader = () => {
+    const scrollRef = useRef<ScrollView>(null);
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const selectCategory = (index: number) => {
+    const selected= itemsRef.current[index];
     setActiveIndex(index);
+
+    selected?.measure((x: any) => {
+        scrollRef.current?.scrollTo({x: x, y: 0, animated: true});
+    });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
   };
 
   return (
@@ -65,6 +73,7 @@ const ExplorerHeader = () => {
           </TouchableOpacity>
         </View>
         <ScrollView
+            ref={scrollRef}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
