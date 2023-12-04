@@ -38,7 +38,11 @@ const categories = [
   },
 ];
 
-const ExplorerHeader = () => {
+interface Props {
+    onCategoryChanged: (category: string) => void;
+}
+
+const ExplorerHeader = ({onCategoryChanged} : Props) => {
     const scrollRef = useRef<ScrollView>(null);
   const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -48,9 +52,10 @@ const ExplorerHeader = () => {
     setActiveIndex(index);
 
     selected?.measure((x: any) => {
-        scrollRef.current?.scrollTo({x: x, y: 0, animated: true});
+        scrollRef.current?.scrollTo({x: x - 16, y: 0, animated: true});
     });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onCategoryChanged(categories[index].name)
   };
 
   return (
@@ -58,14 +63,17 @@ const ExplorerHeader = () => {
       <View style={styles.container}>
         <View style={styles.actionRow}>
           <Link href={"/(modals)/booking"} asChild>
-            <TouchableOpacity style={styles.searchBtn}>
-              <Ionicons name="search" size={24} />
+            <TouchableOpacity>
+                <View style={styles.searchBtn}>
+                <Ionicons name="search" size={24} />
               <View>
                 <Text style={{ fontFamily: "mon-sb" }}>Where to?</Text>
                 <Text style={{ fontFamily: "mon", color: Colors.grey }}>
                   Anywhere · any week
                 </Text>
               </View>
+                </View>
+              
             </TouchableOpacity>
           </Link>
           <TouchableOpacity style={styles.filterBtn}>
@@ -78,7 +86,7 @@ const ExplorerHeader = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: "center",
-            gap: 20,
+            gap: 30,
             paddingHorizontal: 16,
           }}
         >
@@ -125,12 +133,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 16,
     gap: 10,
+    paddingTop:20
   },
   filterBtn: {
     padding: 10,
     borderWidth: 1,
     borderColor: Colors.grey,
-    borderRadius: 24,
+    borderRadius: 30,
   },
   searchBtn: {
     flexDirection: "row",
