@@ -1,8 +1,14 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
-import { useLocalSearchParams } from "expo-router";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Share } from "react-native";
+import React, { useLayoutEffect } from "react";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import listingsData from "../../assets/data/airbnb-listings.json";
-import Animated, { SlideInDown, interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from "react-native-reanimated";
+import Animated, {
+  SlideInDown,
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+} from "react-native-reanimated";
 import { Listing } from "../../interfaces/listing";
 import { Dimensions } from "react-native";
 import Colors from "../../constants/Colors";
@@ -19,27 +25,59 @@ const Page = () => {
   );
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
+  const navigation = useNavigation();
+
+  const shareListing = async () => {
+    try {
+      await Share.share({
+        title: listing.name,
+        url: listing.listing_url
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={styles.bar}>
+          <TouchableOpacity style={styles.roundButton} onPress={shareListing}>
+            <Ionicons name="share-outline" size={22} color={'#000'} />
+          </TouchableOpacity>
+        </View>
+      )
+    })
+  }, [])
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
-    return{
+    return {
       transform: [
         {
           translateY: interpolate(
-            scrollOffset.value, 
+            scrollOffset.value,
             [-IMG_HEIGHT, 0, IMG_HEIGHT],
-            [-IMG_HEIGHT/4, 0, IMG_HEIGHT * 0.75]
-          )
+            [-IMG_HEIGHT / 4, 0, IMG_HEIGHT * 0.75]
+          ),
         },
         {
-          scale: interpolate(scrollOffset.value, [-IMG_HEIGHT, 0, IMG_HEIGHT], [2,1,1])
-        }
-      ]
-    }
+          scale: interpolate(
+            scrollOffset.value,
+            [-IMG_HEIGHT, 0, IMG_HEIGHT],
+            [2, 1, 1]
+          ),
+        },
+      ],
+    };
   });
 
   return (
     <View style={styles.container}>
-      <Animated.ScrollView ref={scrollRef} contentContainerStyle={{paddingBottom: 100}} scrollEventThrottle={16}>
+      <Animated.ScrollView
+        ref={scrollRef}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        scrollEventThrottle={16}
+      >
         <Animated.Image
           source={{ uri: listing.xl_picture_url }}
           style={[styles.image, imageAnimatedStyle]}
@@ -81,16 +119,27 @@ const Page = () => {
           <Text style={styles.description}>{listing.description}</Text>
         </View>
       </Animated.ScrollView>
-      <Animated.View style={defaultStyles.footer} entering={SlideInDown.delay(200)}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <TouchableOpacity style={styles.footerText}>
-              <Text style={styles.footerPrice}>$ {listing.price}</Text>
-              <Text>night</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[defaultStyles.btn, {paddingHorizontal:20}]}>
-              <Text style={defaultStyles.btnText}>Reserve</Text>
-            </TouchableOpacity>
-          </View>
+      <Animated.View
+        style={defaultStyles.footer}
+        entering={SlideInDown.delay(200)}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity style={styles.footerText}>
+            <Text style={styles.footerPrice}>$ {listing.price}</Text>
+            <Text>night</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[defaultStyles.btn, { paddingHorizontal: 20 }]}
+          >
+            <Text style={defaultStyles.btnText}>Reserve</Text>
+          </TouchableOpacity>
+        </View>
       </Animated.View>
     </View>
   );
