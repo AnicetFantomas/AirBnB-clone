@@ -35,7 +35,7 @@ const Listings = ({ listings: items, category }: Props) => {
     <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
         <Animated.View style={styles.listing} entering={FadeInRight} exiting={FadeOutLeft}>
-          <Image source={{ uri: item.medium_url }} style={styles.image} />
+          <Image source={{ uri: item.xl_picture_url }} style={styles.image} />
           <TouchableOpacity
             style={{ position: "absolute", right: 30, top: 30 }}
           >

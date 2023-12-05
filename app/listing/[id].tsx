@@ -40,15 +40,34 @@ const Page = () => {
 
   useLayoutEffect(()=>{
     navigation.setOptions({
+      headerTitle: '',
+      headerTransparent: true,
+      headerBackground: () => (
+        <Animated.View style={[headerAnimation, styles.header]} />
+      ),
       headerRight: () => (
         <View style={styles.bar}>
           <TouchableOpacity style={styles.roundButton} onPress={shareListing}>
             <Ionicons name="share-outline" size={22} color={'#000'} />
           </TouchableOpacity>
+          <TouchableOpacity style={styles.roundButton} >
+            <Ionicons name="heart-outline" size={22} color={'#000'} />
+          </TouchableOpacity>
         </View>
+      ), 
+      headerLeft: () => (
+        <TouchableOpacity style={styles.roundButton} onPress={() => navigation.goBack()} >
+            <Ionicons name="chevron-back" size={22} color={'#000'} />
+          </TouchableOpacity>
       )
     })
-  }, [])
+  }, []);
+
+  const headerAnimation = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollOffset.value, [-0, IMG_HEIGHT / 1.5], [0,1])
+    };
+  })
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
     return {
