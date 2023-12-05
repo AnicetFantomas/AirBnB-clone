@@ -30,10 +30,10 @@ const Listings = ({ listings: items, category }: Props) => {
   }, [category]);
 
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
-    <Link href={`/listing/${item.id}`}>
+    <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
-        <View>
-          <Image source={{ uri: item.medium_url }} />
+        <View style={styles.listing}>
+          <Image source={{ uri: item.medium_url }} style={styles.image} />
         </View>
       </TouchableOpacity>
     </Link>
@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
   listing: {
     padding: 16,
   },
+  image: {
+    width: '100%', 
+    height: 300
+  }
 });
 
 export default Listings;
