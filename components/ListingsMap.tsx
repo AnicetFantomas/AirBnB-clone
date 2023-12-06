@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 import MapView, {
   Marker,
   PROVIDER_DEFAULT,
@@ -19,7 +19,7 @@ const INITIAL_REGION = {
   longitudeDelta: 9,
 };
 
-const ListingsMap = ({ listings }: Props) => {
+const ListingsMap = memo(({ listings }: Props) => {
 const router = useRouter();
 
   const onMarkerSelected = (item: ListingGeo) => {
@@ -52,7 +52,7 @@ const router = useRouter();
       </MapView>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
