@@ -1,4 +1,12 @@
-import { View, Text, Button, StyleSheet, SafeAreaView, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Link } from "expo-router";
@@ -33,14 +41,40 @@ const Page = () => {
         <Ionicons name="notifications-outline" size={26} />
       </View>
 
-      {user && <View style={styles.card}>
-        <TouchableOpacity
-          // style={styles.imageContainer}
-          onPress={onCaptureImage}
-        >
-          <Image source={{uri: user?.imageUrl}} style={styles.avatar} />
-        </TouchableOpacity>
-        </View>}
+      {user && (
+        <View style={styles.card}>
+          <TouchableOpacity
+            // style={styles.imageContainer}
+            onPress={onCaptureImage}
+          >
+            <Image source={{ uri: user?.imageUrl }} style={styles.avatar} />
+          </TouchableOpacity>
+          <View style={{ flexDirection: "row", gap: 6 }}>
+            {edit ? (
+              <Text>EDIT PROFILE</Text>
+            ) : (
+              <View style={styles.editRow}>
+                <View style={{ flexDirection: "row", gap: 5 }}>
+                  <Text
+                    style={{
+                      fontFamily: "mon-sb",
+                      fontSize: 22,
+                      textAlign: "center",
+                    }}
+                  >
+                    {firstName} {lastName}
+                  </Text>
+                  <TouchableOpacity onPress={() => setEdit(true)}>
+                    <Ionicons name="create-outline" size={24} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </View>
+          <Text>{email}</Text>
+          <Text>Since: {user?.createdAt?.toLocaleDateString()}</Text>
+        </View>
+      )}
 
       {isSignedIn && (
         <Button title="Log out" onPress={() => signOut()} color={Colors.dark} />
@@ -69,8 +103,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 24,
     borderRadius: 16,
-    marginHorizontal:24,
-    marginTop:24,
+    marginHorizontal: 24,
+    marginTop: 24,
     elevation: 2,
     shadowColor: "#000",
     shadowOpacity: 0.2,
@@ -80,15 +114,22 @@ const styles = StyleSheet.create({
       height: 2,
     },
     alignItems: "center",
-    gap:14,
+    gap: 14,
     marginBottom: 24,
   },
-  avatar : {
+  avatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
     backgroundColor: Colors.grey,
-  }
+  },
+  editRow: {
+    flex: 1,
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
 });
 
 export default Page;
