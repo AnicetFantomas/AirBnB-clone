@@ -6,6 +6,7 @@ import Listings from '../../components/Listings';
 import listingsData from '../../assets/data/airbnb-listings.json'
 import ListingsMap from '../../components/ListingsMap';
 import listingsDataGeo from '../../assets/data/airbnb-listings.geo.json'
+import ListingBottomSheet from '../../components/ListingBottomSheet';
 
 
 const Page = () => {
@@ -21,6 +22,7 @@ const Page = () => {
       <Stack.Screen options={{ header: () => <ExplorerHeader onCategoryChanged={onDataChanged} />}} />
       {/* <Listings listings={items} category={category} /> */}
       <ListingsMap listings={listingsDataGeo}  />
+      <ListingBottomSheet listings={items} category={category} />
     </View>
   )
 }
