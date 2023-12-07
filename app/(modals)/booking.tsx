@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet,TextInput,TouchableOpacity  } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import Animated, {
@@ -23,6 +29,7 @@ const Page = () => {
   const router = useRouter();
   const [openCard, setOpenCard] = useState(0);
   const [selectedPLace, setSelectedPLace] = useState(0);
+  const today = new Date().toISOString().substring(0, 10);
 
   const onClearAll = () => {
     setSelectedPLace(0);
@@ -61,18 +68,38 @@ const Page = () => {
                   placeholderTextColor={Colors.grey}
                 />
               </View>
-             
             </Animated.View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:25, padding:20, marginBottom:20}}>
-                {
-                  places.map((item, index) => (
-                    <TouchableOpacity key={index} onPress={()=> setSelectedPLace(index)}>
-                      <Image source={item.img} style={selectedPLace === index ? styles.placeSelected : styles.place}/>
-                      <Text style={[{ padding:6}, selectedPLace === index ? {fontFamily: "mon-b", color: "#000"} : {fontFamily: "mon"}]}>{item.title}</Text>
-                  </TouchableOpacity>
-                  ))
-                }
-              </ScrollView>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: 25, padding: 20, marginBottom: 20 }}
+            >
+              {places.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => setSelectedPLace(index)}
+                >
+                  <Image
+                    source={item.img}
+                    style={
+                      selectedPLace === index
+                        ? styles.placeSelected
+                        : styles.place
+                    }
+                  />
+                  <Text
+                    style={[
+                      { padding: 6 },
+                      selectedPLace === index
+                        ? { fontFamily: "mon-b", color: "#000" }
+                        : { fontFamily: "mon" },
+                    ]}
+                  >
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </>
         )}
       </View>
@@ -91,14 +118,22 @@ const Page = () => {
         )}
         {openCard === 1 && (
           <>
-          <Animated.Text entering={FadeIn} style={styles.cardHeader}>
+            <Animated.Text entering={FadeIn} style={styles.cardHeader}>
               When's your trip?
             </Animated.Text>
             <Animated.View style={styles.cardBody}>
-            <DatePicker options={{defaultFont: 'mon'}}/>
-          </Animated.View>
+              <DatePicker
+                mode="calendar"
+                current={today}
+                options={{
+                  defaultFont: "mon",
+                  headerFont: "mon-sb",
+                  borderColor: "transparent",
+                  mainColor: Colors.primary,
+                }}
+              />
+            </Animated.View>
           </>
-          
         )}
       </View>
 
@@ -236,9 +271,9 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 10,
-    borderWidth:2,
+    borderWidth: 2,
     borderColor: Colors.grey,
-  }
+  },
 });
 
 export default Page;
