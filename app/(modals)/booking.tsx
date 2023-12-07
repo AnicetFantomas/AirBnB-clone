@@ -1,12 +1,18 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet,TextInput,TouchableOpacity  } from "react-native";
 import React, { useState } from "react";
 import { BlurView } from "expo-blur";
-import Animated, { FadeIn, FadeOut, SlideInDown } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  SlideInDown,
+} from "react-native-reanimated";
 import { defaultStyles } from "../../constants/styles";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import { ScrollView } from "react-native-gesture-handler";
+import { places } from "../../assets/data/places";
+import { Image } from "react-native";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
@@ -35,6 +41,38 @@ const Page = () => {
             <Text style={styles.previewDate}>I'm flexible</Text>
           </AnimatedTouchableOpacity>
         )}
+        {openCard === 0 && (
+          <>
+            <Animated.Text entering={FadeIn} style={styles.cardHeader}>
+              Where to ?
+            </Animated.Text>
+            <Animated.View style={styles.cardBody}>
+              <View style={styles.searchSection}>
+                <Ionicons
+                  style={styles.searchIcon}
+                  name="ios-search"
+                  size={20}
+                />
+                <TextInput
+                  style={styles.inputField}
+                  placeholder="Search destination"
+                  placeholderTextColor={Colors.grey}
+                />
+              </View>
+             
+            </Animated.View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:25, padding:20, marginBottom:20}}>
+                {
+                  places.map((item, index) => (
+                    <TouchableOpacity key={index} onPress={()=> setSelectedPLace(index)}>
+                      <Image source={item.img} style={selectedPLace === index ? styles.placeSelected : styles.place}/>
+                      <Text style={{fontFamily: 'mon', padding:6}}>{item.title}</Text>
+                  </TouchableOpacity>
+                  ))
+                }
+              </ScrollView>
+          </>
+        )}
       </View>
 
       <View style={styles.card}>
@@ -49,6 +87,13 @@ const Page = () => {
             <Text style={styles.previewDate}>Any week</Text>
           </AnimatedTouchableOpacity>
         )}
+        {openCard === 1 && (
+          <Animated.View style={styles.cardBody}>
+            <Animated.Text entering={FadeIn} style={styles.cardHeader}>
+              When's your trip?
+            </Animated.Text>
+          </Animated.View>
+        )}
       </View>
 
       <View style={styles.card}>
@@ -62,6 +107,13 @@ const Page = () => {
             <Text style={styles.previewText}>Who</Text>
             <Text style={styles.previewDate}>Add guests</Text>
           </AnimatedTouchableOpacity>
+        )}
+        {openCard === 2 && (
+          <Animated.View style={styles.cardBody}>
+            <Animated.Text entering={FadeIn} style={styles.cardHeader}>
+              Who's coming?
+            </Animated.Text>
+          </Animated.View>
         )}
       </View>
       <Animated.View
@@ -138,9 +190,50 @@ const styles = StyleSheet.create({
   },
   cardPreview: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 20,
   },
+  cardHeader: {
+    fontSize: 24,
+    fontFamily: "mon-b",
+    padding: 20,
+  },
+  cardBody: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  searchSection: {
+    height: 50,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#ABABAB",
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    alignContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  inputField: {
+    flex: 1,
+    padding: 10,
+  },
+  searchIcon: {
+    padding: 10,
+  },
+  place: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    backgroundColor: Colors.grey,
+  },
+  placeSelected: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    borderWidth:2,
+    borderColor: Colors.grey,
+  }
 });
 
 export default Page;
