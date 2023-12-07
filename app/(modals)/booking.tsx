@@ -25,11 +25,35 @@ import DatePicker from "react-native-modern-datepicker";
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
+const guestsGroups = [
+  {
+    name: "Adults",
+    text: "Ages 13 or above",
+    count: 0,
+  },
+  {
+    name: "Children",
+    text: "Ages 2-12",
+    count: 0,
+  },
+  {
+    name: "Infants",
+    text: "Under 2",
+    count: 0,
+  },
+  {
+    name: "Pets",
+    text: "Pets allowed",
+    count: 0,
+  },
+];
+
 const Page = () => {
   const router = useRouter();
   const [openCard, setOpenCard] = useState(0);
   const [selectedPLace, setSelectedPLace] = useState(0);
   const today = new Date().toISOString().substring(0, 10);
+  const [groups, setGroups] = useState(guestsGroups);
 
   const onClearAll = () => {
     setSelectedPLace(0);
@@ -150,11 +174,73 @@ const Page = () => {
           </AnimatedTouchableOpacity>
         )}
         {openCard === 2 && (
-          <Animated.View style={styles.cardBody}>
+          <>
             <Animated.Text entering={FadeIn} style={styles.cardHeader}>
               Who's coming?
             </Animated.Text>
-          </Animated.View>
+            <Animated.View style={styles.cardBody}>
+              {groups.map((item, index) => (
+                <View key={index} style={styles.guestItem}>
+                  <View>
+                    <Text style={styles.guestGroupText}>{item.name}</Text>
+                    <Text style={styles.guestGroupText}>
+                      {item.text} guests
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 10,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        const newGroups = [...groups];
+                        newGroups[index].count = Math.max(
+                          0,
+                          newGroups[index].count - 1
+                        );
+                        setGroups(newGroups);
+                      }}
+                    >
+                      <Ionicons
+                        name="remove-circle-outline"
+                        size={26}
+                        color={
+                          groups[index].count > 0 ? Colors.grey : "#cdcdcd"
+                        }
+                      />
+                    </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontFamily: "mon",
+                        fontSize: 16,
+                        minWidth: 18,
+                        textAlign: "center",
+                      }}
+                    >
+                      {item.count}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        const newGroups = [...groups];
+                        newGroups[index].count++;
+                        setGroups(newGroups);
+                      }}
+                    >
+                      <Ionicons
+                        name="add-circle-outline"
+                        size={26}
+                        color={Colors.grey}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </Animated.View>
+          </>
         )}
       </View>
       <Animated.View
@@ -273,6 +359,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: Colors.grey,
+  },
+  guestItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 16,
+  },
+  guestGroupText: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: Colors.grey,
+    paddingBottom: 4,
   },
 });
 
