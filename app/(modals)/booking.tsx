@@ -13,6 +13,8 @@ import Colors from "../../constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 import { places } from "../../assets/data/places";
 import { Image } from "react-native";
+// @ts-ignore
+import DatePicker from "react-native-modern-datepicker";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
@@ -66,7 +68,7 @@ const Page = () => {
                   places.map((item, index) => (
                     <TouchableOpacity key={index} onPress={()=> setSelectedPLace(index)}>
                       <Image source={item.img} style={selectedPLace === index ? styles.placeSelected : styles.place}/>
-                      <Text style={{fontFamily: 'mon', padding:6}}>{item.title}</Text>
+                      <Text style={[{ padding:6}, selectedPLace === index ? {fontFamily: "mon-b", color: "#000"} : {fontFamily: "mon"}]}>{item.title}</Text>
                   </TouchableOpacity>
                   ))
                 }
@@ -88,11 +90,15 @@ const Page = () => {
           </AnimatedTouchableOpacity>
         )}
         {openCard === 1 && (
-          <Animated.View style={styles.cardBody}>
-            <Animated.Text entering={FadeIn} style={styles.cardHeader}>
+          <>
+          <Animated.Text entering={FadeIn} style={styles.cardHeader}>
               When's your trip?
             </Animated.Text>
+            <Animated.View style={styles.cardBody}>
+            <DatePicker options={{defaultFont: 'mon'}}/>
           </Animated.View>
+          </>
+          
         )}
       </View>
 
@@ -212,7 +218,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignContent: "center",
     alignItems: "center",
-    marginBottom: 16,
   },
   inputField: {
     flex: 1,
@@ -222,14 +227,14 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   place: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 10,
     backgroundColor: Colors.grey,
   },
   placeSelected: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 10,
     borderWidth:2,
     borderColor: Colors.grey,
