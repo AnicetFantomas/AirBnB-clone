@@ -180,10 +180,10 @@ const Page = () => {
             </Animated.Text>
             <Animated.View style={styles.cardBody}>
               {groups.map((item, index) => (
-                <View key={index} style={styles.guestItem}>
+                <View key={index} style={[styles.guestItem, index + 1 < guestsGroups.length ? styles.itemBorder : null]}>
                   <View>
-                    <Text style={styles.guestGroupText}>{item.name}</Text>
-                    <Text style={styles.guestGroupText}>
+                    <Text style={{fontFamily: "mon-sb", fontSize: 14}}>{item.name}</Text>
+                    <Text style={{fontFamily: "mon", fontSize: 12, color: Colors.grey}}>
                       {item.text} guests
                     </Text>
                   </View>
@@ -366,10 +366,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 16,
   },
-  guestGroupText: {
+  
+  
+  itemBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.grey,
-    paddingBottom: 4,
   },
 });
 
