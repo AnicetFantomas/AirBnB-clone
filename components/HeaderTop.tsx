@@ -15,23 +15,19 @@ const HeaderTop = () => {
     setFirstName(user?.firstName);
   }, [user]);
 
-  //   const handlePress = () => {
-  //     linkTo("/app/(tabs)/profile");
-  //   }
-
   return (
     isSignedIn && (
       <View style={styles.header}>
         <View>
           <Text style={{ color: "#fff", fontSize: 24, fontFamily: "mon-b" }}>
-            Hello {user?.firstName}
+            Hello {firstName}
           </Text>
           <Text style={{ color: "#fff", fontSize: 14, marginTop: 5 }}>
             Welcome back...
           </Text>
         </View>
         <View>
-          <Link href={"/(tabs)/profile"} asChild>
+          <Link href={"/(modals)/profile"} asChild>
             <TouchableOpacity style={styles.profileIcon}>
               <View>
                 <Image

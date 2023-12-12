@@ -2,7 +2,11 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import Colors from "../../constants/Colors";
-import { FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 const Layout = () => {
   return (
@@ -34,7 +38,7 @@ const Layout = () => {
       <Tabs.Screen
         name="trips"
         options={{
-          tabBarLabel: "Trips",
+          tabBarLabel: "Host",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="airbnb" color={color} size={size} />
           ),
@@ -46,18 +50,22 @@ const Layout = () => {
         options={{
           tabBarLabel: "inbox",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="message-outline" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="message-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
 
-<Tabs.Screen
-        name="profile"
+      <Tabs.Screen
+        name="notifications"
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: "Notifications",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-circle-outline" color={color} size={size} />
+            <Ionicons name="notifications-outline" color={color} size={size} />
           ),
         }}
       />
