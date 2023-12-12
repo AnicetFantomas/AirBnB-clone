@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-expo";
-import { Link } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { defaultStyles } from "../../constants/styles";
 import Colors from "../../constants/Colors";
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from 'expo-image-picker'
+import Animated from "react-native-reanimated";
 
 const Page = () => {
   const { signOut, isSignedIn } = useAuth();
@@ -23,6 +24,7 @@ const Page = () => {
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.emailAddresses[0].emailAddress);
   const [edit, setEdit] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!user) return;
@@ -60,6 +62,19 @@ const Page = () => {
       })
     }
   };
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      headerTitle: '',
+      headerTransparent: true,
+     
+      headerLeft: () => (
+        <TouchableOpacity style={styles.roundButton} onPress={() => navigation.goBack()} >
+            <Ionicons name="chevron-back" size={22} color={'#000'} />
+          </TouchableOpacity>
+      )
+    })
+  }, []);
 
   return (
     <SafeAreaView style={defaultStyles.container}>
@@ -168,6 +183,15 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     gap: 8,
+  },
+  roundButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    color: Colors.primary,
   },
 });
 
