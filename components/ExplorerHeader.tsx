@@ -6,6 +6,7 @@ import { Link } from "expo-router";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import * as Haptics from 'expo-haptics';
+import HeaderTop from "./HeaderTop";
 
 const categories = [
   {
@@ -61,6 +62,7 @@ const ExplorerHeader = ({onCategoryChanged} : Props) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "fff" }}>
       <View style={styles.container}>
+      <HeaderTop />
         <View style={styles.actionRow}>
           <Link href={"/(modals)/booking"} asChild>
             <TouchableOpacity>
