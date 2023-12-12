@@ -2,7 +2,11 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import Colors from "../../constants/Colors";
-import { FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 const Layout = () => {
   return (
@@ -46,12 +50,16 @@ const Layout = () => {
         options={{
           tabBarLabel: "inbox",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="message-outline" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="message-outline"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
 
-<Tabs.Screen
+      <Tabs.Screen
         name="profile"
         options={{
           tabBarLabel: "Profile",
