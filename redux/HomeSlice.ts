@@ -31,5 +31,12 @@ export const homeSlice = createSlice({
     deleteItem: (state, action) => {
       state.homes = state.homes.filter((item) => item.id !== action.payload);
     },
+    resetList: (state) => {
+      state.homes = [];
+    },
   },
 });
+
+
+export const { addToWish, deleteItem, resetList } = homeSlice.actions;
+export default homeSlice.reducer;
