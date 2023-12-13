@@ -7,6 +7,10 @@ import * as SecureStore from "expo-secure-store";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import ModalHeaderText from "../components/ModalHeaderText";
 import Colors from "../constants/Colors";
+import { Provider } from "react-redux";
+import { persistor, store } from "../redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { Text } from "react-native";
 
 const EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY =
   process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -65,12 +69,16 @@ export default function RootLayout() {
   }
 
   return (
-    <ClerkProvider
-      publishableKey={EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
-      tokenCache={tokenCache}
-    >
-      <RootLayoutNav />
-    </ClerkProvider>
+    <Provider store={store}>
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <ClerkProvider
+          publishableKey={EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
+          tokenCache={tokenCache}
+        >
+          <RootLayoutNav />
+        </ClerkProvider>
+      </PersistGate>
+    </Provider>
   );
 }
 

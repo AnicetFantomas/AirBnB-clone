@@ -13,6 +13,8 @@ import { Link } from "expo-router";
 import { Listing } from "../interfaces/listing";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated'
+import { useDispatch } from "react-redux";
+import { addToWish } from "../redux/HomeSlice";
 
 interface Props {
   listings: any[];
@@ -23,6 +25,9 @@ interface Props {
 const Listings = ({ listings: items, category, refresh }: Props) => {
   const [loading, setLoanding] = useState(false);
   const listRef = useRef<FlatList>(null);
+  const dispatch = useDispatch()
+  
+  
 
   useEffect(() => {
     if(refresh) {

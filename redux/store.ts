@@ -1,3 +1,4 @@
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
 import { configureStore } from "@reduxjs/toolkit";
 import homeReducer from './HomeSlice'
 import {
@@ -11,13 +12,11 @@ import {
     REGISTER
 } from 'redux-persist'
 
-import storage from 'redux-persist/lib/storage'
-
 
 const persistConfig = {
     key: 'root',
     version: 1,
-    storage
+    storage: AsyncStorage,
 }
 
 const persistHomeReducer = persistReducer(persistConfig, homeReducer)
