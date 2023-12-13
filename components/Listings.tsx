@@ -26,6 +26,7 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
   const [loading, setLoanding] = useState(false);
   const listRef = useRef<FlatList>(null);
   const dispatch = useDispatch();
+  const [selectedItem, setSelectedItem] = useState<string[]>([]);
 
   useEffect(() => {
     if (refresh) {
@@ -40,6 +41,16 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
       setLoanding(false);
     }, 200);
   }, [category]);
+
+  const toggleSelection =(itemId: string) => {
+    setSelectedItem((prevSelectedItem) => {
+      if (prevSelectedItem.includes(itemId)) {
+        return prevSelectedItem.filter((id) => id !== itemId);
+      } else {
+        return [...prevSelectedItem, itemId];
+      }
+    })
+  }
 
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
@@ -61,10 +72,11 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
                 price: item.price,
               };
               dispatch(addToWish(payload));
-              console.log(payload);
+              toggleSelection(item.id);
+              // console.log(payload);
             }}
           >
-            <Ionicons name="heart-outline" size={24} color={"#000"} />
+            <Ionicons name={selectedItem.includes(item.id) ? "heart" : "heart-outline"} size={24} color={"#000"} />
           </TouchableOpacity>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
