@@ -240,10 +240,11 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   header: {
-    backgroundColor: "#fff",
-    height: 100,
+    backgroundColor: "#263991",
+    height: 120,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.grey,
+    paddingVertical: 10
   },
 
   description: {

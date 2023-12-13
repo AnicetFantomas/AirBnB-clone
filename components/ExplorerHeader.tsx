@@ -60,7 +60,7 @@ const ExplorerHeader = ({onCategoryChanged} : Props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#263991" }}>
       <View style={styles.container}>
       <HeaderTop />
         <View style={styles.actionRow}>

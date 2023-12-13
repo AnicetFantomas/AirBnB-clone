@@ -40,7 +40,7 @@ const Layout = () => {
         options={{
           tabBarLabel: "Host",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="airbnb" color={color} size={size} />
+            <FontAwesome5 name="plus" color={color} size={size} />
           ),
         }}
       />
