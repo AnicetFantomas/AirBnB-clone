@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 interface Home {
   id: string;
   quantity: number;
+  wishlist: boolean;
 }
 
 interface HomeState {
@@ -15,6 +16,8 @@ const initialState: HomeState = {
   userInfo: [],
 };
 
+
+
 export const homeSlice = createSlice({
   name: "home",
   initialState,
@@ -24,7 +27,14 @@ export const homeSlice = createSlice({
       if (item) {
         item.quantity += action.payload.quantity;
       } else {
-        state.homes.push(action.payload);
+        state.homes.push({...action.payload, wishlist: false});
+      }
+    },
+
+    addToWishList: (state, action) => {
+      const item = state.homes.find((item) => item.id === action.payload.id);
+      if (item) {
+        item.wishlist = !item.wishlist;
       }
     },
 
@@ -38,5 +48,5 @@ export const homeSlice = createSlice({
 });
 
 
-export const { addToWish, deleteItem, resetList } = homeSlice.actions;
+export const { addToWish, deleteItem, resetList, addToWishList } = homeSlice.actions;
 export default homeSlice.reducer;

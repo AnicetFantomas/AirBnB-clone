@@ -13,8 +13,8 @@ import { Link } from "expo-router";
 import { Listing } from "../interfaces/listing";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
-import { useDispatch } from "react-redux";
-import { addToWish } from "../redux/HomeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWish, addToWishList } from "../redux/HomeSlice";
 
 interface Props {
   listings: any[];
@@ -26,6 +26,7 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
   const [loading, setLoanding] = useState(false);
   const listRef = useRef<FlatList>(null);
   const dispatch = useDispatch();
+  const wishlistsItems = useSelector((state: any) => state.home.homes);
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
 
   useEffect(() => {
@@ -42,15 +43,19 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     }, 200);
   }, [category]);
 
-  const toggleSelection =(itemId: string) => {
+  const toggleSelection = (itemId: string) => {
     setSelectedItem((prevSelectedItem) => {
       if (prevSelectedItem.includes(itemId)) {
         return prevSelectedItem.filter((id) => id !== itemId);
       } else {
         return [...prevSelectedItem, itemId];
       }
-    })
-  }
+    });
+  };
+
+  // const isItemInWishList = (itemId: string) => {
+  //   return wishlistsItems.some((item: any) => item.id === itemId);
+  // }
 
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
@@ -73,10 +78,19 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
               };
               dispatch(addToWish(payload));
               toggleSelection(item.id);
-              // console.log(payload);
+                console.log(item.id, "added");
+
+              // if (isItemInWishList(item.id)) {
+              //   dispatch(addToWishList(item.id));
+              //   console.log(item.id, "added");
+              // }
             }}
           >
-            <Ionicons name={selectedItem.includes(item.id) ? "heart" : "heart-outline"} size={24} color={"#000"} />
+            <Ionicons
+              name={selectedItem.includes(item.id) ? "heart" : "heart-outline"}
+              size={24}
+              color={"#000"}
+            />
           </TouchableOpacity>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
