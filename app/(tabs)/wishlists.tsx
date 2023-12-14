@@ -8,7 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft, SlideInDown } from "react-native-reanimated";
 import { ScrollView } from "react-native-gesture-handler";
 import { defaultStyles } from "../../constants/styles";
-import { resetList } from "../../redux/HomeSlice";
+import { deleteItem, resetList } from "../../redux/HomeSlice";
 
 const Page = () => {
   const wishlistItems = useSelector((state: any) => state.home.homes);
@@ -54,6 +54,11 @@ const Page = () => {
                 <Text style={{ fontFamily: "mon-sb" }}>$ {item.price}</Text>
                 <Text style={{ fontFamily: "mon-sb" }}>night</Text>
               </View>
+              <TouchableOpacity onPress={() => {dispatch(deleteItem(item.id))}}
+            style={[defaultStyles.btn, { paddingHorizontal: 20 }]}
+          >
+            <Text style={defaultStyles.btnText}>Delete</Text>
+          </TouchableOpacity>
             </Animated.View>
           </TouchableOpacity>
         </Link>
