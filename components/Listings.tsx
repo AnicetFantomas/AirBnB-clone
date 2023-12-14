@@ -14,7 +14,7 @@ import { Listing } from "../interfaces/listing";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWish, addToWishList } from "../redux/HomeSlice";
+import { addToWish, addToWishList, deleteItem } from "../redux/HomeSlice";
 
 interface Props {
   listings: any[];
@@ -53,10 +53,6 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     });
   };
 
-  // const isItemInWishList = (itemId: string) => {
-  //   return wishlistsItems.some((item: any) => item.id === itemId);
-  // }
-
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
@@ -72,18 +68,15 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
               const payload = {
                 id: item.id,
                 name: item.name,
+                image: item.xl_picture_url,
                 review_scores_rating: item.review_scores_rating,
                 room_type: item.room_type,
                 price: item.price,
               };
+              // console.log(payload);
               dispatch(addToWish(payload));
               toggleSelection(item.id);
                 console.log(item.id, "added");
-
-              // if (isItemInWishList(item.id)) {
-              //   dispatch(addToWishList(item.id));
-              //   console.log(item.id, "added");
-              // }
             }}
           >
             <Ionicons

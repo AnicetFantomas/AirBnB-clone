@@ -35,6 +35,7 @@ interface GeoLocation {
   }
   
   export interface Listing {
+    imageUrl(arg0: string, imageUrl: any): unknown;
     id: string;
     listing_url: string;
     scrape_id: string;

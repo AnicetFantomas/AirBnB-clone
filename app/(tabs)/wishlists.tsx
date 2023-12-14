@@ -1,24 +1,104 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import Wishlist from '../../components/WishList'
+import { View, Text, StyleSheet, Image } from "react-native";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "expo-router";
+import { TouchableOpacity } from "react-native";
+import { Listing } from "../../interfaces/listing";
+import { Ionicons } from "@expo/vector-icons";
+import Animated, { FadeInRight, FadeOutLeft, SlideInDown } from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
+import { defaultStyles } from "../../constants/styles";
+import { resetList } from "../../redux/HomeSlice";
 
 const Page = () => {
-
   const wishlistItems = useSelector((state: any) => state.home.homes);
-
-  // console.log("Dojob", wishlistItems)
+  const dispatch = useDispatch();
 
   return (
-    <View>
-      <Text>Wish list</Text>
-      {wishlistItems.map((item: any) => (
-        <View key={item.id}>
-          <Text>{item.id}</Text>
-        </View>
-      ))}
-    </View>
-  )
-}
+    
 
-export default Page
+    <>
+    <ScrollView>
+      {wishlistItems.map((item: any) => (
+            console.log("Image URL:", item.image),
+        <Link href={`/listing/${item.id}`} asChild key={item.id}>
+          <TouchableOpacity>
+            <Animated.View
+              style={styles.listing}
+              entering={FadeInRight}
+              exiting={FadeOutLeft}
+            >
+              <Image
+                source={{ uri: item.image }}
+                style={styles.image}
+              />
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ fontFamily: "mon-sb", fontSize: 16 }}>
+                  {item.name}
+                </Text>
+                <View style={{ flexDirection: "row", gap: 4 }}>
+                  <Ionicons name="star" size={16} />
+                  <Text style={{ fontFamily: "mon-sb" }}>
+                    {item.review_scores_rating / 20}
+                  </Text>
+                </View>
+              </View>
+              <Text style={{ fontFamily: "mon" }}>{item.room_type}</Text>
+              <View style={{ flexDirection: "row", gap: 4 }}>
+                <Text style={{ fontFamily: "mon-sb" }}>$ {item.price}</Text>
+                <Text style={{ fontFamily: "mon-sb" }}>night</Text>
+              </View>
+            </Animated.View>
+          </TouchableOpacity>
+        </Link>
+      ))}
+      
+    </ScrollView>
+    <Animated.View
+        style={defaultStyles.footer}
+        entering={SlideInDown.delay(200)}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity onPress={() => {dispatch(resetList())}}
+            style={[defaultStyles.btn, { paddingHorizontal: 20 }]}
+          >
+            <Text style={defaultStyles.btnText}>Reserve</Text>
+          </TouchableOpacity>
+        </View>
+      </Animated.View>
+    </>
+  );
+};
+
+const styles = StyleSheet.create({
+  listing: {
+    padding: 16,
+    gap: 10,
+    marginVertical: 16,
+  },
+  image: {
+    width: "100%",
+    height: 300,
+    borderRadius: 10,
+  },
+  info: {
+    textAlign: "center",
+    fontFamily: "mon-sb",
+    fontSize: 16,
+    marginTop: 4,
+  },
+});
+
+export default Page;
