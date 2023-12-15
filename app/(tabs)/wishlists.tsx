@@ -28,6 +28,7 @@ const Page = () => {
               entering={FadeInRight}
               exiting={FadeOutLeft}
             >
+              
               <Image
                 source={{ uri: item.image }}
                 style={styles.image}
@@ -65,24 +66,20 @@ const Page = () => {
       ))}
       
     </ScrollView>
-    <Animated.View
-        style={defaultStyles.footer}
-        entering={SlideInDown.delay(200)}
-      >
+  
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            position: "absolute",
+            bottom: 10,
+            left: 130,
           }}
         >
           <TouchableOpacity onPress={() => {dispatch(resetList())}}
-            style={[defaultStyles.btn, { paddingHorizontal: 20 }]}
+            style={[defaultStyles.btn, { paddingHorizontal: 20,  }]}
           >
-            <Text style={defaultStyles.btnText}>Reserve</Text>
+            <Text style={defaultStyles.btnText}>Reset List</Text>
           </TouchableOpacity>
         </View>
-      </Animated.View>
     </>
   );
 };
