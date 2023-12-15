@@ -46,16 +46,30 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
   const toggleSelection = (itemId: string) => {
     setSelectedItem((prevSelectedItem) => {
       if (prevSelectedItem.includes(itemId)) {
+        dispatch(deleteItem(itemId));
         return prevSelectedItem.filter((id) => id !== itemId);
       } else {
+        dispatch(addToWishList(itemId));
         return [...prevSelectedItem, itemId];
       }
     });
   };
 
-  const isItemInWishList = (itemId: string) => {
-    return wishlistsItems.some((item: any) => item.id === itemId);
+  const handlePressButton = (item: Listing) => {
+    const payload = {
+      id: item.id,
+      name: item.name,
+      image: item.xl_picture_url,
+      review_scores_rating: item.review_scores_rating,
+      room_type: item.room_type,
+      price: item.price,
+    };
+    // console.log(payload);
+    dispatch(addToWish(payload));
+    toggleSelection(item.id);
+  
   };
+
 
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
@@ -68,26 +82,7 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
           <Image source={{ uri: item.xl_picture_url }} style={styles.image} />
           <TouchableOpacity
             style={{ position: "absolute", right: 30, top: 30 }}
-            onPress={() => {
-              const payload = {
-                id: item.id,
-                name: item.name,
-                image: item.xl_picture_url,
-                review_scores_rating: item.review_scores_rating,
-                room_type: item.room_type,
-                price: item.price,
-              };
-              // console.log(payload);
-              dispatch(addToWish(payload));
-              toggleSelection(item.id);
-                // console.log(item.id, "added");
-
-                if (isItemInWishList(item.id)) {
-                  // Dispatch addToWishList with the item's id
-                  dispatch(deleteItem(item.id));
-                  console.log(item.id, "removed from wishlist");
-                }
-            }}
+            onPress={() => handlePressButton(item)}
           >
             <Ionicons
               name={selectedItem.includes(item.id) ? "heart" : "heart-outline"}
@@ -122,7 +117,7 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     <View style={defaultStyles.container}>
       <FlatList
         ref={listRef}
-        data={loading ? [] : items}
+        data={loading ? [] : items.slice(0, 40)}
         renderItem={renderRow}
         ListHeaderComponent={
           <Text style={styles.info}>{items.length} homes</Text>
