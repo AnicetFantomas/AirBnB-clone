@@ -16,7 +16,9 @@
     "@clerk/clerk-expo": "^0.19.21",
     "@expo/vector-icons": "^13.0.0",
     "@gorhom/bottom-sheet": "^4.5.1",
+    "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-navigation/native": "^6.0.2",
+    "@reduxjs/toolkit": "^2.0.1",
     "expo": "~49.0.15",
     "expo-blur": "~12.4.1",
     "expo-font": "~11.4.0",
@@ -39,7 +41,10 @@
     "react-native-reanimated": "~3.3.0",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "react-redux": "^9.0.4",
+    "redux": "^5.0.0",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

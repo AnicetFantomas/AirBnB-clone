@@ -7,8 +7,11 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 const Layout = () => {
+  const wishlistItemsNumber = useSelector((state: any) => state.home.homes.length);
+
   return (
     <Tabs
       screenOptions={{
@@ -25,15 +28,35 @@ const Layout = () => {
           ),
         }}
       />
-      <Tabs.Screen
-        name="wishlists"
-        options={{
-          tabBarLabel: "Wishlists",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart-outline" color={color} size={size} />
-          ),
-        }}
-      />
+
+     <Tabs.Screen
+  name="wishlists"
+  options={{
+    tabBarLabel: "Wishlists",
+    tabBarIcon: ({ color, size }) => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Ionicons name="heart-outline" color={color} size={size} />
+        {wishlistItemsNumber > 0 && (
+          <View
+            style={{
+              position: 'absolute',
+              top: -4, 
+              right: -4, 
+              backgroundColor: '#263991',
+              borderRadius: 10,
+              padding: 4,
+            }}
+          >
+            <Text style={{ color: 'white', fontFamily: 'mon-sb', fontSize: 12 }}>
+              {wishlistItemsNumber}
+            </Text>
+          </View>
+        )}
+      </View>
+    ),
+  }}
+/>
+
 
       <Tabs.Screen
         name="trips"

@@ -12,7 +12,9 @@ import { defaultStyles } from "../constants/styles";
 import { Link } from "expo-router";
 import { Listing } from "../interfaces/listing";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated'
+import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWish, addToWishList, deleteItem } from "../redux/HomeSlice";
 
 interface Props {
   listings: any[];
@@ -23,12 +25,15 @@ interface Props {
 const Listings = ({ listings: items, category, refresh }: Props) => {
   const [loading, setLoanding] = useState(false);
   const listRef = useRef<FlatList>(null);
+  const dispatch = useDispatch();
+  const wishlistsItems = useSelector((state: any) => state.home.homes);
+  const [selectedItem, setSelectedItem] = useState<string[]>([]);
 
   useEffect(() => {
-    if(refresh) {
-        listRef.current?.scrollToOffset({offset:0, animated: true});
+    if (refresh) {
+      listRef.current?.scrollToOffset({ offset: 0, animated: true });
     }
-  }, [refresh])
+  }, [refresh]);
 
   useEffect(() => {
     console.log("listings reloaded", items.length);
@@ -38,15 +43,52 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     }, 200);
   }, [category]);
 
+  const toggleSelection = (itemId: string) => {
+    setSelectedItem((prevSelectedItem) => {
+      if (prevSelectedItem.includes(itemId)) {
+        dispatch(deleteItem(itemId));
+        return prevSelectedItem.filter((id) => id !== itemId);
+      } else {
+        dispatch(addToWishList(itemId));
+        return [...prevSelectedItem, itemId];
+      }
+    });
+  };
+
+  const handlePressButton = (item: Listing) => {
+    const payload = {
+      id: item.id,
+      name: item.name,
+      image: item.xl_picture_url,
+      review_scores_rating: item.review_scores_rating,
+      room_type: item.room_type,
+      price: item.price,
+    };
+    // console.log(payload);
+    dispatch(addToWish(payload));
+    toggleSelection(item.id);
+  
+  };
+
+
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
-        <Animated.View style={styles.listing} entering={FadeInRight} exiting={FadeOutLeft}>
+        <Animated.View
+          style={styles.listing}
+          entering={FadeInRight}
+          exiting={FadeOutLeft}
+        >
           <Image source={{ uri: item.xl_picture_url }} style={styles.image} />
           <TouchableOpacity
             style={{ position: "absolute", right: 30, top: 30 }}
+            onPress={() => handlePressButton(item)}
           >
-            <Ionicons name="heart-outline" size={24} color={"#000"} />
+            <Ionicons
+              name={selectedItem.includes(item.id) ? "heart" : "heart-outline"}
+              size={24}
+              color={"#000"}
+            />
           </TouchableOpacity>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -75,9 +117,11 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     <View style={defaultStyles.container}>
       <FlatList
         ref={listRef}
-        data={loading ? [] : items}
+        data={loading ? [] : items.slice(0, 40)}
         renderItem={renderRow}
-        ListHeaderComponent={<Text style={styles.info}>{items.length} homes</Text>}
+        ListHeaderComponent={
+          <Text style={styles.info}>{items.length} homes</Text>
+        }
       />
     </View>
   );
@@ -96,10 +140,10 @@ const styles = StyleSheet.create({
   },
   info: {
     textAlign: "center",
-    fontFamily:'mon-sb',
+    fontFamily: "mon-sb",
     fontSize: 16,
     marginTop: 4,
-  }
+  },
 });
 
 export default Listings;

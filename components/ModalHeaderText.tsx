@@ -35,4 +35,4 @@ const ModalHeaderText = () => {
   );
 };
 
-export default ModalHeaderText;
+
