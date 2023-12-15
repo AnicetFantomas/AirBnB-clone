@@ -20,7 +20,6 @@ const Page = () => {
     <>
     <ScrollView>
       {wishlistItems.map((item: any) => (
-            console.log("Image URL:", item.image),
         <Link href={`/listing/${item.id}`} asChild key={item.id}>
           <TouchableOpacity>
             <Animated.View
@@ -55,11 +54,6 @@ const Page = () => {
                 <Text style={{ fontFamily: "mon-sb" }}>$ {item.price}</Text>
                 <Text style={{ fontFamily: "mon-sb" }}>night</Text>
               </View>
-              <TouchableOpacity onPress={() => {dispatch(deleteItem(item.id))}}
-            style={[defaultStyles.btn, { paddingHorizontal: 20 }]}
-          >
-            <Text style={defaultStyles.btnText}>Delete</Text>
-          </TouchableOpacity>
             </Animated.View>
           </TouchableOpacity>
         </Link>

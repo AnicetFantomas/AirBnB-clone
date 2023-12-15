@@ -53,6 +53,10 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     });
   };
 
+  const isItemInWishList = (itemId: string) => {
+    return wishlistsItems.some((item: any) => item.id === itemId);
+  };
+
   const renderRow: ListRenderItem<Listing> = ({ item }) => (
     <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
@@ -76,7 +80,13 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
               // console.log(payload);
               dispatch(addToWish(payload));
               toggleSelection(item.id);
-                console.log(item.id, "added");
+                // console.log(item.id, "added");
+
+                if (isItemInWishList(item.id)) {
+                  // Dispatch addToWishList with the item's id
+                  dispatch(deleteItem(item.id));
+                  console.log(item.id, "removed from wishlist");
+                }
             }}
           >
             <Ionicons

@@ -16,8 +16,6 @@ const initialState: HomeState = {
   userInfo: [],
 };
 
-
-
 export const homeSlice = createSlice({
   name: "home",
   initialState,
@@ -27,16 +25,22 @@ export const homeSlice = createSlice({
       if (item) {
         item.quantity += action.payload.quantity;
       } else {
-        state.homes.push({...action.payload, wishlist: false});
+        state.homes.push({ ...action.payload, wishlist: false });
       }
     },
 
     addToWishList: (state, action) => {
-      const item = state.homes.find((item) => item.id === action.payload.id);
-      if (item) {
-        item.wishlist = !item.wishlist;
-      }
-    },
+        const item = state.homes.find((item) => item.id === action.payload);
+        if (item) {
+          // Toggle the wishlist status
+          item.wishlist = !item.wishlist;
+  
+          // If the item is no longer in the wishlist, remove it
+          if (!item.wishlist) {
+            state.homes = state.homes.filter((i) => i.id !== action.payload);
+          }
+        }
+      },
 
     deleteItem: (state, action) => {
       state.homes = state.homes.filter((item) => item.id !== action.payload);
@@ -47,6 +51,6 @@ export const homeSlice = createSlice({
   },
 });
 
-
-export const { addToWish, deleteItem, resetList, addToWishList } = homeSlice.actions;
+export const { addToWish, deleteItem, resetList, addToWishList } =
+  homeSlice.actions;
 export default homeSlice.reducer;
