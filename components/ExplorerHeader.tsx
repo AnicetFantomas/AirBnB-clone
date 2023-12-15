@@ -6,6 +6,7 @@ import { Link } from "expo-router";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import * as Haptics from 'expo-haptics';
+import HeaderTop from "./HeaderTop";
 
 const categories = [
   {
@@ -59,8 +60,9 @@ const ExplorerHeader = ({onCategoryChanged} : Props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#263991" }}>
       <View style={styles.container}>
+      <HeaderTop />
         <View style={styles.actionRow}>
           <Link href={"/(modals)/booking"} asChild>
             <TouchableOpacity>
@@ -77,7 +79,7 @@ const ExplorerHeader = ({onCategoryChanged} : Props) => {
             </TouchableOpacity>
           </Link>
           <TouchableOpacity style={styles.filterBtn}>
-            <Ionicons name="options-outline" size={24} />
+            <Ionicons name="options-outline" size={24} color={'#000'} />
           </TouchableOpacity>
         </View>
         <ScrollView
@@ -124,9 +126,10 @@ const ExplorerHeader = ({onCategoryChanged} : Props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    height: 130,
+    height: 250,
   },
   actionRow: {
+    backgroundColor: "#263991",
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "space-between",
@@ -136,6 +139,7 @@ const styles = StyleSheet.create({
     paddingTop:20
   },
   filterBtn: {
+    backgroundColor: "#fff",
     padding: 10,
     borderWidth: 1,
     borderColor: Colors.grey,

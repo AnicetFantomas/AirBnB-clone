@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
 
   btn: {
-    backgroundColor: Colors.dark,
+    backgroundColor: '#263991',
     padding: 16,
     height: 50,
     flexDirection: "row",

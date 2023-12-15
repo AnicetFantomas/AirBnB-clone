@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Page = () => {
+const notifications = () => {
   return (
     <View>
-      <Text>Host</Text>
+      <Text>notifications</Text>
     </View>
   )
 }
 
-export default Page
+export default notifications
