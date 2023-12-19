@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWish, addToWishList, deleteItem } from "../redux/HomeSlice";
+import * as Notifications from "expo-notifications";
 
 interface Props {
   listings: any[];
@@ -43,6 +44,20 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     }, 200);
   }, [category]);
 
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      const { granted} = await Notifications.requestPermissionsAsync();
+      if (!granted) {
+        const {granted: newPermission} = await Notifications.requestPermissionsAsync();
+        if (!newPermission) {
+          console.log("No notification permission granted");
+        }
+      }
+    };
+
+    requestNotificationPermission();
+  }, []);
+
   const toggleSelection = (itemId: string) => {
     setSelectedItem((prevSelectedItem) => {
       if (prevSelectedItem.includes(itemId)) {
@@ -54,6 +69,16 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
       }
     });
   };
+
+  const sendNotification = async () => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "WishList",
+        body: "Your wishList has been updated",
+      },
+      trigger: null,
+    });
+  }
 
   const handlePressButton = (item: Listing) => {
     const payload = {
@@ -67,7 +92,7 @@ const Listings = ({ listings: items, category, refresh }: Props) => {
     // console.log(payload);
     dispatch(addToWish(payload));
     toggleSelection(item.id);
-  
+    sendNotification();
   };
 
 

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import Colors from "../constants/Colors";
 
@@ -35,4 +35,23 @@ const ModalHeaderText = () => {
   );
 };
 
+const styles = StyleSheet.create({
+  listing: {
+    padding: 16,
+    gap: 10,
+    marginVertical: 16,
+  },
+  image: {
+    width: "100%",
+    height: 300,
+    borderRadius: 10,
+  },
+  info: {
+    textAlign: "center",
+    fontFamily: "mon-sb",
+    fontSize: 16,
+    marginTop: 4,
+  },
+});
 
+export default ModalHeaderText;
