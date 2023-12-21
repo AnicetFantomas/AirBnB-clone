@@ -15,23 +15,23 @@ import { Text } from "react-native";
 const EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY =
   process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-const tokenCache = {
-  async getToken(key: string) {
-    try {
-      return SecureStore.getItemAsync(key);
-    } catch (err) {
-      return null;
-    }
-  },
-
-  async saveToken(key: string, value: string) {
-    try {
-      return SecureStore.setItemAsync(key, value);
-    } catch (err) {
-      return null;
-    }
-  },
-};
+  const tokenCache = {
+    async getToken(key: string): Promise<string | null> {
+      try {
+        return SecureStore.getItemAsync(key);
+      } catch (err) {
+        return null;
+      }
+    },
+  
+    async saveToken(key: string, value: string): Promise<void> {
+      try {
+        await SecureStore.setItemAsync(key, value);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+  };
 
 export {
   // Catch any errors thrown by the Layout component.
